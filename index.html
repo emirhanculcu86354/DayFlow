@@ -7,6 +7,20 @@
 <meta name="theme-color" content="#0B0B0F" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dayflow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Dayflow">
+<meta name="description" content="Dayflow — gününü saat saat planla; takvim, görevler, alışkanlıklar, odak zamanlayıcı ve AI planlayıcı tek uygulamada. Verilerin cihazında kalır.">
+<meta name="keywords" content="günlük planlayıcı, takvim, yapılacaklar, alışkanlık takibi, pomodoro, odak, day planner, habit tracker">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dayflow — Günlük planlayıcı">
+<meta property="og:description" content="Takvim, görevler, alışkanlıklar ve odak zamanlayıcı tek yerde. Çevrimdışı çalışır, verilerin cihazında kalır.">
+<meta property="og:image" content="dayflow-icon-1024.png">
+<meta name="twitter:card" content="summary">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="dayflow-icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Dayflow</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -295,6 +309,24 @@ textarea.input{height:auto;min-height:80px;padding:12px 14px;resize:vertical}
 .qa-prev b{color:var(--ink);font-weight:600}
 .quick{grid-template-columns:repeat(3,1fr)!important}
 @media (min-width:1024px){.quick.q6{grid-template-columns:repeat(6,1fr)!important}}
+a.btn{text-decoration:none}
+/* pro */
+.pro-pill{display:inline-flex;align-items:center;height:18px;padding:0 6px;border-radius:6px;background:linear-gradient(135deg,var(--accent),#C05BD6);color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;vertical-align:middle}
+.pro-hero{text-align:center;padding:4px 0 14px}
+.pro-badge{width:60px;height:60px;border-radius:20px;margin:0 auto 12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--accent),#C05BD6);box-shadow:0 10px 26px color-mix(in srgb,var(--accent) 40%,transparent)}
+.pro-badge svg{width:28px;height:28px}
+.pro-feat .mi{width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.pro-feat .mi svg{width:18px;height:18px}
+.pro-feat.hl{background:var(--accent-soft);border-radius:12px;padding-left:8px;padding-right:8px;border-bottom-color:transparent}
+.pro-ok{width:18px;height:18px;color:var(--ok);flex:none}
+.pro-card{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px;border-radius:var(--r-lg);color:#fff;background:linear-gradient(135deg,var(--accent),#C05BD6);box-shadow:0 10px 28px color-mix(in srgb,var(--accent) 35%,transparent)}
+.pro-card .pro-badge{width:44px;height:44px;border-radius:14px;margin:0;background:rgba(255,255,255,.2);box-shadow:none}
+.pro-card .pro-badge svg{width:22px;height:22px}
+.pro-card .chev{width:18px;height:18px;flex:none}
+.pro-card.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.pro-card.on .pro-badge{background:linear-gradient(135deg,var(--accent),#C05BD6)}
+.demo-banner{padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--ink);font-size:13px;font-weight:600;margin-bottom:12px;text-align:center}
+.license-key{font-family:ui-monospace,Consolas,monospace;font-size:18px;letter-spacing:.08em;text-align:center;padding:14px;border-radius:14px;border:1px dashed var(--line);background:var(--surface-2);user-select:all;word-break:break-all}
 .btn:disabled{opacity:.5;cursor:default}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -311,7 +343,11 @@ textarea.input{height:auto;min-height:80px;padding:12px 14px;resize:vertical}
 <script>
 "use strict";
 /* ============ CONFIG ============ */
-const APP = { name: "Dayflow", storageKey: "dayflow:v1", version: 1 };
+const APP = { name: "Dayflow", storageKey: "dayflow:v1", version: 1, release: "1.2.0" };
+// Satıştan önce kendi bilgilerinle değiştir (privacy.html ve terms.html içindeki aynı alanlarla birlikte).
+const BRAND = { supportEmail: "destek@dayflow.app", website: "", privacyUrl: "privacy.html", termsUrl: "terms.html" };
+// Pro sürüm. demo: true iken gerçek ödeme alınmaz; ödeme sağlayıcısı bağlanınca checkoutUrl doldurulup demo kapatılacak.
+const PRO = { demo: true, price: "299 TL", priceNote: "tek seferlik · ömür boyu", freeHabits: 3, checkoutUrl: "", licenseKey: "dayflow:license" };
 
 /* ============ ICONS ============ */
 const I = (p, extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${p}</svg>`;
@@ -472,6 +508,44 @@ const P = [
 ["🔥 {0}: {1} günlük seri!",["🔥 {0}: {1}-day streak!","🔥 {0}: ¡racha de {1} días!"]],["{0} aktivite ve {1} görev yüklenecek. Mevcut veriler silinecek.",["{0} activities and {1} tasks will be loaded. Current data will be deleted.","Se cargarán {0} actividades y {1} tareas. Se borrarán los datos actuales."]],
 ["{0} tarihine kadar",["until {0}","hasta el {0}"]],["{0} öncelik",["{0} priority","Prioridad {0}"]]
 ];
+// v1.1 — satış sürümü metinleri
+Object.assign(D, {
+"Cihaz depolama alanı dolu; son değişiklik kaydedilemedi. Yedek alıp eski verileri temizle.":["Device storage is full; the last change couldn't be saved. Export a backup and clear old data.","El almacenamiento está lleno; no se pudo guardar el último cambio. Exporta una copia y borra datos antiguos."],
+"Hızlı planlayıcı (cihaz üzerinde) önerisi. Süreleri “2 saat ders, 45 dk spor” gibi yazarsan daha iyi sonuç alırsın.":["On-device quick planner suggestion. Write durations like “2 hours study, 45 min workout” for better results.","Sugerencia del planificador rápido (en el dispositivo). Escribe duraciones como “2 horas estudio, 45 min deporte” para mejores resultados."],
+"Uygulamayı yükle":["Install app","Instalar app"],"Hakkında":["About","Acerca de"],"Destek ve geri bildirim":["Support & feedback","Soporte y comentarios"],"Gizlilik politikası":["Privacy policy","Política de privacidad"],"Kullanım koşulları":["Terms of use","Términos de uso"],"Dayflow'u paylaş":["Share Dayflow","Compartir Dayflow"],
+"Dayflow ana ekranına eklendi":["Dayflow was added to your home screen","Dayflow se añadió a tu pantalla de inicio"],
+"Safari'de alttaki Paylaş düğmesine dokun, ardından “Ana Ekrana Ekle”yi seç.":["In Safari, tap the Share button, then choose “Add to Home Screen”.","En Safari, toca Compartir y elige “Añadir a pantalla de inicio”."],
+"Tarayıcı menüsünden “Uygulamayı yükle” ya da “Ana ekrana ekle”yi seç.":["Choose “Install app” or “Add to Home screen” from your browser menu.","Elige “Instalar app” o “Añadir a pantalla de inicio” en el menú del navegador."],
+"Yüklendikten sonra Dayflow çevrimdışı da çalışır.":["Once installed, Dayflow also works offline.","Una vez instalada, Dayflow también funciona sin conexión."],
+"Veri depolama":["Data storage","Almacenamiento"],"Cihaz + bulut senkronu":["Device + cloud sync","Dispositivo + nube"],"Yalnızca bu cihaz":["This device only","Solo este dispositivo"],"AI planlayıcı":["AI planner","Planificador IA"],"Cihaz üzerinde":["On-device","En el dispositivo"],"Çevrimdışı kullanım":["Offline use","Uso sin conexión"],"Hazır":["Ready","Listo"],"Tarayıcıya bağlı":["Depends on browser","Según el navegador"],
+"Dayflow reklam, izleyici veya analitik araç içermez.":["Dayflow contains no ads, trackers or analytics.","Dayflow no contiene anuncios, rastreadores ni analíticas."],
+"Gününü saat saat planla: takvim, görevler ve alışkanlıklar tek yerde.":["Plan your day hour by hour: calendar, tasks and habits in one place.","Planifica tu día hora a hora: calendario, tareas y hábitos en un solo lugar."],
+"Yeni sürüm hazır. Uygulamayı yeniden açınca güncellenecek.":["A new version is ready. It will update when you reopen the app.","Hay una nueva versión. Se actualizará al volver a abrir la app."],
+"Beklenmeyen bir hata oluştu. Verilerin güvende; sorun sürerse sayfayı yenile.":["Something went wrong. Your data is safe; reload the page if it persists.","Algo salió mal. Tus datos están a salvo; recarga la página si continúa."]
+});
+// Pro metinleri
+Object.assign(D, {
+"Dayflow Pro aktif":["Dayflow Pro active","Dayflow Pro activo"],"Dayflow Pro'ya geç":["Upgrade to Dayflow Pro","Pásate a Dayflow Pro"],"Tüm özellikler açık · Lisansı yönet":["All features unlocked · Manage license","Todas las funciones activas · Gestionar licencia"],
+"AI planlayıcı, sınırsız alışkanlık ve daha fazlası":["AI planner, unlimited habits and more","Planificador IA, hábitos ilimitados y más"],"Gününün tam kontrolü":["Take full control of your day","Control total de tu día"],"Pro'ya özel":["is a Pro feature","es una función Pro"],
+"Tek seferlik ödeme, abonelik yok. Tüm gelecek güncellemeler dahil.":["One-time payment, no subscription. All future updates included.","Pago único, sin suscripción. Incluye todas las actualizaciones futuras."],
+"Gününü anlat, takvimini o kursun":["Describe your day, it builds your calendar","Describe tu día y armará tu calendario"],"Sınırsız alışkanlık":["Unlimited habits","Hábitos ilimitados"],"Ücretsiz sürümde en fazla 3":["Up to 3 on the free plan","Hasta 3 en el plan gratuito"],
+"Gelişmiş istatistikler":["Advanced stats","Estadísticas avanzadas"],"30 günlük trendler ve kategori analizi":["30-day trends and category insights","Tendencias de 30 días y análisis por categoría"],"Rutin şablonları":["Routine templates","Plantillas de rutina"],
+"Hazır ve kendi şablonlarınla tek dokunuşta plan":["Plan in one tap with built-in or your own templates","Planifica con un toque con plantillas propias o incluidas"],"Dosya ekleri":["File attachments","Archivos adjuntos"],"Aktivitelere fotoğraf ve PDF ekle":["Attach photos and PDFs to activities","Adjunta fotos y PDF a actividades"],
+"Takvim ve tablo dışa aktarma":["Calendar & spreadsheet export","Exportar calendario y hoja de cálculo"],"Google/Apple Takvim (ICS) ve Excel (CSV)":["Google/Apple Calendar (ICS) and Excel (CSV)","Google/Apple Calendar (ICS) y Excel (CSV)"],"Kişiselleştirme":["Personalization","Personalización"],"Özel kategoriler ve 8 vurgu rengi":["Custom categories and 8 accent colors","Categorías propias y 8 colores de acento"],
+"Ücretsiz sürümdeki verilerin olduğu gibi kalır. Pro'ya geçmek ya da geçmemek verilerini asla kilitlemez.":["Your data on the free plan stays as it is. Upgrading or not never locks your data.","Tus datos del plan gratuito se mantienen. Pasarte o no a Pro nunca bloquea tus datos."],
+"Pro'ya geç":["Get Pro","Obtener Pro"],"Lisans anahtarım var":["I have a license key","Tengo una clave de licencia"],"Ödeme":["Checkout","Pago"],"TEST MODU · Gerçek ödeme alınmaz, kart bilgisi istenmez.":["TEST MODE · No real payment is taken and no card details are needed.","MODO DE PRUEBA · No se cobra nada ni se piden datos de tarjeta."],
+"Plan":["Plan","Plan"],"tek seferlik · ömür boyu":["one-time · lifetime","pago único · de por vida"],"KDV":["VAT","IVA"],"Dahil":["Included","Incluido"],"Toplam":["Total","Total"],"Lisansın gönderileceği e-posta":["Email for your license","Correo para tu licencia"],
+"Kullanım koşullarını kabul ediyorum. Dijital içerik hemen teslim edildiği için cayma hakkımın sona ereceğini biliyorum.":["I accept the terms of use. I understand the right of withdrawal ends because digital content is delivered immediately.","Acepto los términos de uso. Entiendo que el derecho de desistimiento termina porque el contenido digital se entrega al instante."],
+"Koşulları oku":["Read the terms","Leer los términos"],"Demo ödemeyi tamamla":["Complete demo payment","Completar pago de prueba"],"Ödeme işleniyor…":["Processing payment…","Procesando pago…"],"Geçerli bir e-posta yaz.":["Enter a valid email.","Escribe un correo válido."],"Devam etmek için koşulları onayla.":["Accept the terms to continue.","Acepta los términos para continuar."],
+"Pro'ya hoş geldin!":["Welcome to Pro!","¡Bienvenido a Pro!"],"Tüm özellikler açıldı. Lisans anahtarını başka cihazlarda kullanmak için sakla.":["Everything is unlocked. Keep your license key to use it on other devices.","Todo está desbloqueado. Guarda tu clave para usarla en otros dispositivos."],
+"Bu bir demo lisansıdır.":["This is a demo license.","Esta es una licencia de prueba."],"Başla":["Get started","Empezar"],"Lisans anahtarı kopyalandı":["License key copied","Clave copiada"],"Kopyalanamadı":["Couldn't copy","No se pudo copiar"],
+"Lisans":["License","Licencia"],"Durum":["Status","Estado"],"Aktif":["Active","Activa"],"Ömür boyu":["Lifetime","De por vida"],"Etkinleştirme":["Activated","Activada"],"Sipariş":["Order","Pedido"],"Bu cihazda devre dışı bırak":["Deactivate on this device","Desactivar en este dispositivo"],
+"Lisansı devre dışı bırak":["Deactivate license","Desactivar licencia"],"Pro özellikleri bu cihazda kapanır, verilerin silinmez. Anahtarınla daha sonra tekrar etkinleştirebilirsin.":["Pro features turn off on this device; your data isn't deleted. You can reactivate later with your key.","Las funciones Pro se desactivan en este dispositivo; tus datos no se borran. Puedes reactivarla con tu clave."],
+"Devre dışı bırak":["Deactivate","Desactivar"],"Lisans devre dışı bırakıldı":["License deactivated","Licencia desactivada"],"Lisans anahtarı":["License key","Clave de licencia"],"Satın aldıktan sonra e-postana gelen anahtarı gir.":["Enter the key you received by email after purchase.","Introduce la clave que recibiste por correo tras la compra."],
+"Etkinleştir":["Activate","Activar"],"Lisans anahtarı geçersiz. DF-XXXX-XXXX-XXXX biçiminde olmalı.":["Invalid license key. It should look like DF-XXXX-XXXX-XXXX.","Clave no válida. Debe tener el formato DF-XXXX-XXXX-XXXX."]
+});
+P.push(["{0} Pro'ya özel", ["{0} is a Pro feature", "{0} es una función Pro"]]);
+P.push(["Son yedek: {0}", ["Last backup: {0}", "Última copia: {0}"]], ["Sürüm {0}", ["Version {0}", "Versión {0}"]]);
 const PRE = P.map(([src, tgt]) => { const keys = []; const re = new RegExp("^" + src.replace(/[.*+?^$()|[\]\\]/g, "\\$&").replace(/\{(\d)\}/g, (_, k) => { keys.push(+k); return "(.+?)"; }) + "$", "s"); return { re, keys, tgt }; });
 function L(s) { if (LANG === "tr" || s == null) return s; const e = D[s]; return e ? e[LANG === "en" ? 0 : 1] : s; }
 function tr(s, depth = 0) {
@@ -547,9 +621,11 @@ const cat = id => { const c = S.categories.find(c => c.id === id) || S.categorie
 /* ============ PERSISTENCE (local + Claude db sync) ============ */
 let remote = null, saveTimer = null, pendingRemote = false, assetsApi = null, downloadsApi = null;
 function loadLocal() { try { const raw = localStorage.getItem(APP.storageKey); if (raw) S = migrate(JSON.parse(raw)); } catch { } }
+let quotaWarned = false;
 function save(skipRender) {
   S.updatedAt = Date.now();
-  try { localStorage.setItem(APP.storageKey, JSON.stringify(S)); } catch { }
+  try { localStorage.setItem(APP.storageKey, JSON.stringify(S)); quotaWarned = false; }
+  catch { if (!quotaWarned) { quotaWarned = true; toast("Cihaz depolama alanı dolu; son değişiklik kaydedilemedi. Yedek alıp eski verileri temizle.", 6000); } }
   clearTimeout(saveTimer); saveTimer = setTimeout(pushRemote, 1200);
   if (!skipRender) render();
 }
@@ -577,6 +653,25 @@ async function initCapabilities() {
       else if ((S.updatedAt || 0) > (r.updatedAt || 0)) pushRemote();
     } else if (S.onboarded) pushRemote();
   } catch { }
+}
+/* Yerel dosya deposu: Claude assets yokken (bağımsız web/PWA) ekler IndexedDB'de tutulur */
+const IDB = {
+  db: null,
+  open() { return this.db || (this.db = new Promise((res, rej) => { const r = indexedDB.open("dayflow-files", 1); r.onupgradeneeded = () => r.result.createObjectStore("files"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); })); },
+  async run(mode, fn) { const db = await this.open(); return new Promise((res, rej) => { const tx = db.transaction("files", mode), q = fn(tx.objectStore("files")); tx.oncomplete = () => res(q && q.result); tx.onerror = () => rej(tx.error); }); },
+  put(id, blob) { return this.run("readwrite", s => s.put(blob, id)); },
+  get(id) { return this.run("readonly", s => s.get(id)); },
+  del(id) { return this.run("readwrite", s => s.delete(id)); }
+};
+const LOCAL_URLS = new Map();
+const isLocalAtt = id => String(id).startsWith("local_");
+const attSrc = id => isLocalAtt(id) ? (LOCAL_URLS.get(id) || "") : "/_blob/" + id;
+async function hydrateLocalFiles() {
+  if (!("indexedDB" in window)) return;
+  const ids = S.activities.flatMap(a => (a.attachments || []).map(x => x.id)).filter(id => isLocalAtt(id) && !LOCAL_URLS.has(id));
+  if (!ids.length) return;
+  for (const id of ids) { try { const b = await IDB.get(id); if (b) LOCAL_URLS.set(id, URL.createObjectURL(b)); } catch { } }
+  render();
 }
 window.addEventListener("online", () => { render(); if (pendingRemote) pushRemote(); toast("Bağlantı geri geldi, senkronize edildi."); });
 window.addEventListener("offline", () => render());
@@ -1007,7 +1102,7 @@ function activityForm(init, scope = "all", occDate = null) {
       <label class="field"><span>Açıklama</span><textarea class="input" id="af-desc" rows="2">${esc(f.description)}</textarea></label>
       <label class="field"><span>Not</span><textarea class="input" id="af-notes" rows="3" placeholder="Örn. Bench press 70kg 4x8">${esc(f.notes)}</textarea></label>
       <label class="field"><span>Etiketler</span><input class="input" id="af-tags" value="${esc(f.tags.map(t => "#" + t).join(" "))}" placeholder="#spor #kpss"></label>
-      <div class="field"><span>Dosyalar</span><div id="af-att"></div><label class="btn sm" style="align-self:flex-start">${ICON.clip} Fotoğraf / PDF ekle<input type="file" id="af-file" accept="image/*,application/pdf,.doc,.docx,.txt" hidden></label></div>
+      <div class="field"><span>Dosyalar</span><div id="af-att"></div><label class="btn sm" style="align-self:flex-start">${ICON.clip} Fotoğraf / PDF ekle${proPill()}<input type="file" id="af-file" accept="image/*,application/pdf,.doc,.docx,.txt" hidden></label></div>
     </div>`;
   openSheet({
     title: editing ? (scope === "one" ? "Bu etkinliği düzenle" : "Aktiviteyi düzenle") : "Yeni aktivite", body,
@@ -1020,12 +1115,17 @@ function activityForm(init, scope = "all", occDate = null) {
       if (rep) rep.onchange = () => { $("#af-days", el).classList.toggle("hidden", rep.value !== "custom"); $("#af-untilw", el).classList.toggle("hidden", rep.value === "none"); if (rep.value === "custom" && !f.repeat.days.length) { const wd = parseYmd($("#af-date", el).value).getDay(); f.repeat.days = [wd]; $$("[data-wd]", el).forEach(b => b.setAttribute("aria-pressed", +b.dataset.wd === wd)); } };
       $$("[data-wd]", el).forEach(b => b.onclick = () => { const d = +b.dataset.wd; f.repeat.days = f.repeat.days.includes(d) ? f.repeat.days.filter(x => x !== d) : [...f.repeat.days, d]; b.setAttribute("aria-pressed", f.repeat.days.includes(d)); });
       $("#af-start", el).onchange = () => { const s = toMin($("#af-start", el).value), e = toMin($("#af-end", el).value); if (e <= s) $("#af-end", el).value = fromMin(Math.min(1439, s + 60)); };
-      const drawAtt = () => { $("#af-att", el).innerHTML = f.attachments.map((a, i) => `<div class="attach">${a.type.startsWith("image/") ? `<img src="/_blob/${a.id}" alt="">` : ICON.note.replace("<svg", '<svg width="22" height="22"')}<a class="grow ell" href="/_blob/${a.id}" target="_blank" rel="noopener">${esc(a.name)}</a><button type="button" class="icon-btn" data-rmatt="${i}" aria-label="Kaldır">${ICON.x}</button></div>`).join(""); $$("[data-rmatt]", el).forEach(b => b.onclick = () => { f.attachments.splice(+b.dataset.rmatt, 1); drawAtt(); }); };
+      const drawAtt = () => { $("#af-att", el).innerHTML = f.attachments.map((a, i) => `<div class="attach">${a.type.startsWith("image/") ? `<img src="${attSrc(a.id)}" alt="">` : ICON.note.replace("<svg", '<svg width="22" height="22"')}<a class="grow ell" href="${attSrc(a.id)}" target="_blank" rel="noopener">${esc(a.name)}</a><button type="button" class="icon-btn" data-rmatt="${i}" aria-label="Kaldır">${ICON.x}</button></div>`).join(""); $$("[data-rmatt]", el).forEach(b => b.onclick = () => { f.attachments.splice(+b.dataset.rmatt, 1); drawAtt(); }); };
       drawAtt();
       $("#af-file", el).onchange = async e => {
         const file = e.target.files[0]; e.target.value = ""; if (!file) return;
-        if (!assetsApi) { toast("Dosya yükleme bu görünümde kullanılamıyor."); return; }
+        if (!requirePro("files")) return;
         if (file.size > 20 * 1024 * 1024) { toast("Dosya 20 MB'tan büyük olamaz."); return; }
+        if (!assetsApi) {
+          if (!("indexedDB" in window)) { toast("Dosya yükleme bu görünümde kullanılamıyor."); return; }
+          try { const id = "local_" + uid(); await IDB.put(id, file); LOCAL_URLS.set(id, URL.createObjectURL(file)); f.attachments.push({ id, name: file.name, type: file.type || "application/octet-stream" }); drawAtt(); } catch { toast("Dosya yüklenemedi. Tekrar dene."); }
+          return;
+        }
         toast("Yükleniyor…", 1200);
         try { const r = await assetsApi.upload(file); f.attachments.push({ id: r.id, name: file.name, type: file.type || "application/octet-stream" }); drawAtt(); } catch { toast("Dosya yüklenemedi. Tekrar dene."); }
       };
@@ -1076,7 +1176,7 @@ function activityDetail(id, date) {
       <div class="list">${rows.map(([ic, t]) => `<div class="item" style="padding:10px 0"><span style="color:var(--muted);width:20px;display:grid">${ic.replace("<svg", '<svg width="20" height="20"')}</span><div class="grow">${t}</div></div>`).join("")}</div>
       ${o.description ? `<div class="section" style="margin-top:14px"><h3>Açıklama</h3><p style="margin:6px 0;white-space:pre-wrap">${esc(o.description)}</p></div>` : ""}
       ${o.notes ? `<div class="section" style="margin-top:14px"><h3>Not</h3><div class="card" style="box-shadow:none;background:var(--surface-2);margin-top:6px;white-space:pre-wrap">${esc(o.notes)}</div></div>` : ""}
-      ${(o.attachments || []).length ? `<div class="section" style="margin-top:14px"><h3 style="margin-bottom:8px">Dosyalar</h3>${o.attachments.map(x => `<a class="attach" href="/_blob/${x.id}" target="_blank" rel="noopener">${x.type.startsWith("image/") ? `<img src="/_blob/${x.id}" alt="">` : ICON.note.replace("<svg", '<svg width="22" height="22"')}<span class="ell">${esc(x.name)}</span></a>`).join("")}</div>` : ""}
+      ${(o.attachments || []).length ? `<div class="section" style="margin-top:14px"><h3 style="margin-bottom:8px">Dosyalar</h3>${o.attachments.map(x => `<a class="attach" href="${attSrc(x.id)}" target="_blank" rel="noopener">${x.type.startsWith("image/") ? `<img src="${attSrc(x.id)}" alt="">` : ICON.note.replace("<svg", '<svg width="22" height="22"')}<span class="ell">${esc(x.name)}</span></a>`).join("")}</div>` : ""}
       ${(o.tags || []).length ? `<div style="margin-top:12px">${tagsHtml(o.tags)}</div>` : ""}
       <div class="row" style="margin-top:18px;gap:8px"><button class="btn grow" data-ed>${ICON.edit} Düzenle</button><button class="btn" data-fo aria-label="Odaklan">${ICON.target}</button><button class="btn" data-cp aria-label="Kopyala">${ICON.copy}</button><button class="btn danger" data-del aria-label="Sil">${ICON.trash}</button></div>`,
     foot: `<button class="btn block ${o.done ? "" : "primary"}" data-done>${o.done ? "Tamamlanmadı olarak işaretle" : "Tamamlandı"}</button>`,
@@ -1226,6 +1326,7 @@ function taskDetail(id) {
 const HABIT_ICONS = ["💧", "🏋️", "📚", "😴", "📖", "🚶", "🧘", "🥗", "✍️", "🎯", "💊", "🌿"];
 function habitForm(init) {
   const editing = !!init.id;
+  if (!editing && !isPro() && S.habits.length >= PRO.freeHabits) { paywall("habits"); return; }
   const f = { name: "", icon: "💧", freq: "daily", days: [1, 2, 3, 4, 5], target: "", logs: [], ...JSON.parse(JSON.stringify(init)) };
   openSheet({
     title: editing ? "Alışkanlığı düzenle" : "Yeni alışkanlık",
@@ -1272,6 +1373,7 @@ function noteForm(init) {
 
 /* ============ STATS ============ */
 function viewStats() {
+  if (!isPro()) UI.statRange = "week";
   const d = today(), range = UI.statRange, n = range === "week" ? 7 : 30;
   const days = Array.from({ length: n }, (_, i) => addDays(d, i - n + 1));
   const td = dayStats(d);
@@ -1283,7 +1385,7 @@ function viewStats() {
   const reviews = Object.entries(S.reviews).sort((a, b) => b[0].localeCompare(a[0])).slice(0, 5);
   const showBars = range === "week" ? per : per.filter((_, i) => i % 3 === 2 || i === per.length - 1);
   return `${topbar("İstatistik")}
-  <div class="seg" style="margin-bottom:14px"><button data-sr="week" aria-pressed="${range === "week"}">Son 7 gün</button><button data-sr="month" aria-pressed="${range === "month"}">Son 30 gün</button></div>
+  <div class="seg" style="margin-bottom:14px"><button data-sr="week" aria-pressed="${range === "week"}">Son 7 gün</button><button data-sr="month" aria-pressed="${range === "month"}">Son 30 gün${proPill()}</button></div>
   <div class="grid2">
     <div class="card stat"><div class="l">Bugün tamamlanan</div><div class="v">${td.done}<span class="muted" style="font-size:16px">/${td.total}</span></div></div>
     <div class="card stat"><div class="l">Seri</div><div class="v">🔥 ${dayStreak()}</div></div>
@@ -1301,7 +1403,7 @@ function viewStats() {
     ${S.habits.map(h => `<span class="ell">${esc(h.icon)} ${esc(h.name)}</span>${[6, 5, 4, 3, 2, 1, 0].map(i => { const dd = addDays(d, -i); return `<span class="c ${(h.logs || []).includes(dd) ? "on" : habitScheduled(h, dd) ? "" : "off"}"></span>`; }).join("")}`).join("")}</div></div>` : ""}
   ${reviews.length ? `<div class="card section"><h2 style="margin-bottom:6px">Gün sonu kayıtları</h2>${reviews.map(([dd, r]) => `<div class="kv"><span>${fmt(dd, { day: "numeric", month: "short", weekday: "short" })}</span><span class="small muted">${r.tDone}/${r.tTotal} görev · ${dur(r.actual)}</span><b>${P100(r.eff)}</b></div>`).join("")}</div>` : ""}`;
 }
-document.addEventListener("click", e => { const b = e.target.closest("[data-sr]"); if (b) { UI.statRange = b.dataset.sr; render(); } });
+document.addEventListener("click", e => { const b = e.target.closest("[data-sr]"); if (b) { if (b.dataset.sr === "month" && !requirePro("stats")) return; UI.statRange = b.dataset.sr; render(); } });
 
 /* ============ PROFILE / SETTINGS ============ */
 function viewProfile() {
@@ -1313,14 +1415,18 @@ function viewProfile() {
     <div class="grow"><h2 style="font-size:20px">${esc(p.name || "İsimsiz")}</h2><div class="small muted">${p.username ? "@" + esc(p.username) : ""}${p.email ? " · " + esc(p.email) : ""}</div><div style="margin-top:8px"><span class="streak">🔥 ${dayStreak()} günlük seri</span></div></div></div>
   <div class="grid2 section"><div class="card stat"><div class="l">Bugün</div><div class="v">${td.tDone}/${td.tasks.length} <span class="muted" style="font-size:14px">görev</span></div><div class="bar" style="margin-top:8px"><i style="width:${Math.min(100, td.tDone / Math.max(1, p.dailyGoal) * 100)}%"></i></div><div class="tiny muted" style="margin-top:6px">Günlük hedef: ${p.dailyGoal}</div></div>
     <div class="card stat"><div class="l">Bu hafta</div><div class="v">${wDone}/${wTot} <span class="muted" style="font-size:14px">görev</span></div><div class="bar" style="margin-top:8px"><i style="width:${Math.min(100, wDone / Math.max(1, p.weeklyGoal) * 100)}%"></i></div><div class="tiny muted" style="margin-top:6px">Haftalık hedef: ${p.weeklyGoal}</div></div></div>
+  <div class="section"><button class="pro-card${isPro() ? " on" : ""}" data-set="pro"><span class="pro-badge">${isPro() ? ICON.check : ICON.sparkle}</span><span class="grow"><b style="font-size:16px">${isPro() ? L("Dayflow Pro aktif") : L("Dayflow Pro'ya geç")}</b><div class="small" style="opacity:.85">${isPro() ? L("Tüm özellikler açık · Lisansı yönet") : L("AI planlayıcı, sınırsız alışkanlık ve daha fazlası") + " · " + PRO.price}</div></span>${ICON.chev.replace("<svg", '<svg class="chev" style="color:inherit;opacity:.8"')}</button></div>
   <div class="section-head section"><h2>Ayarlar</h2></div>
   <div class="menu">${row("profile", ICON.user, "Profil ve hedefler")}${row("notif", ICON.bell, "Bildirimler", S.prefs.activity || S.prefs.task ? "Açık" : "Kapalı")}${row("look", ICON.palette, "Görünüm", { system: "Sistem", light: "Açık", dark: "Koyu" }[p.theme])}${row("cal", ICON.cal, "Takvim ve saat dilimi", p.tz.split("/").pop().replace("_", " "))}${row("cats", ICON.tag, "Kategoriler", S.categories.length)}</div>
   <div class="menu section">${row("data", ICON.download, "Verileri dışa aktar")}${row("import", ICON.upload, "Yedekten geri yükle")}${row("lang", ICON.gear, "Dil", LANGS[LANG].name)}</div>
+  ${canInstall() ? `<div class="menu section">${row("install", ICON.download, "Uygulamayı yükle", isIOS() ? "iOS" : "")}</div>` : ""}
+  <div class="menu section">${row("about", ICON.sparkle, "Hakkında", "v" + APP.release)}${row("support", ICON.bell, "Destek ve geri bildirim")}${row("privacy", ICON.pin, "Gizlilik politikası")}${row("terms", ICON.note, "Kullanım koşulları")}${navigator.share ? row("share", ICON.copy, "Dayflow'u paylaş") : ""}</div>
   <div class="menu section"><button data-set="demo"><span class="mi">${ICON.sun}</span><span class="grow">Örnek verileri yükle</span></button><button data-set="reset" style="color:var(--danger)"><span class="mi" style="color:var(--danger)">${ICON.trash}</span><span class="grow">Tüm verileri sil</span></button></div>
   <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:26px 0 0">${brandHtml(26)}<p class="tiny muted" style="margin:0">${L("Kısayollar: N aktivite, T görev, F odak, / ara")}</p></div>`;
 }
 function bindProfile(root) { $$("[data-set]", root).forEach(b => b.onclick = () => SETTINGS[b.dataset.set]()); }
 const SETTINGS = {
+  pro() { isPro() ? licenseSheet() : paywall(); },
   profile() {
     const p = S.profile; let photo = p.photo;
     openSheet({ title: "Profil ve hedefler", body: `<div class="row" style="margin-bottom:16px"><div class="avatar" id="pf-av">${photo ? `<img src="${esc(photo)}" alt="">` : esc((p.name || "?").charAt(0))}</div><div class="row" style="flex-wrap:wrap;gap:8px"><label class="btn sm">Fotoğraf seç<input type="file" accept="image/*" id="pf-photo" hidden></label>${photo ? `<button class="btn sm" id="pf-rm">Kaldır</button>` : ""}</div></div>
@@ -1358,8 +1464,8 @@ const SETTINGS = {
   look() {
     const p = S.profile;
     openSheet({ title: "Görünüm", body: `<div class="field"><span>Tema</span><div class="seg">${[["system", "Sistem"], ["light", "Açık"], ["dark", "Koyu"]].map(([v, l]) => `<button data-th="${v}" aria-pressed="${p.theme === v}">${l}</button>`).join("")}</div></div>
-      <div class="field"><span>Vurgu rengi</span><div class="swatches">${ACCENTS.map(c => `<button class="swatch" style="--c:${c}" data-ac="${c}" aria-pressed="${p.accent === c}" aria-label="Renk ${c}"></button>`).join("")}</div></div>`,
-      onMount(el) { bindChips(el, "th", v => { p.theme = v; save(); }); bindChips(el, "ac", v => { p.accent = v; save(); }); } });
+      <div class="field"><span>Vurgu rengi${proPill()}</span><div class="swatches">${ACCENTS.map(c => `<button class="swatch" style="--c:${c}" data-ac="${c}" aria-pressed="${p.accent === c}" aria-label="Renk ${c}"></button>`).join("")}</div></div>`,
+      onMount(el) { bindChips(el, "th", v => { p.theme = v; save(); }); bindChips(el, "ac", v => { if (v !== ACCENTS[0] && !requirePro("look")) { $$("[data-ac]", el).forEach(x => x.setAttribute("aria-pressed", x.dataset.ac === p.accent)); return; } p.accent = v; save(); }); } });
   },
   cal() {
     const p = S.profile;
@@ -1377,12 +1483,12 @@ const SETTINGS = {
       $$("[data-crm]", el).forEach(b => b.onclick = () => { const id = b.dataset.crm; S.activities.forEach(a => { if (a.category === id) a.category = "other"; }); S.tasks.forEach(t => { if (t.category === id) t.category = "other"; }); S.categories = S.categories.filter(c => c.id !== id); save(); draw(el); });
     };
     let color = ACCENTS[2];
-    openSheet({ title: "Kategoriler", body: `<div class="list" id="ct-list"></div><div class="section"><h3 style="margin-bottom:10px">Yeni kategori</h3><div class="row"><input class="input" id="ct-icon" value="⭐" style="width:60px;text-align:center" maxlength="4" aria-label="Simge"><input class="input grow" id="ct-name" placeholder="Kategori adı"></div><div class="swatches" style="margin:12px 0">${ACCENTS.map(c => `<button class="swatch" style="--c:${c}" data-cc="${c}" aria-pressed="${c === color}" aria-label="Renk"></button>`).join("")}</div><button class="btn block" id="ct-add">${ICON.plus} Kategori ekle</button></div>`,
-      onMount(el) { draw(el); bindChips(el, "cc", v => color = v); $("#ct-add", el).onclick = () => { const name = $("#ct-name", el).value.trim(); if (!name) { toast("Kategori adı yaz."); return; } S.categories.push({ id: "c_" + uid(), name, icon: $("#ct-icon", el).value.trim() || "⭐", color }); $("#ct-name", el).value = ""; save(); draw(el); toast("Kategori eklendi"); }; } });
+    openSheet({ title: "Kategoriler", body: `<div class="list" id="ct-list"></div><div class="section"><h3 style="margin-bottom:10px">Yeni kategori</h3><div class="row"><input class="input" id="ct-icon" value="⭐" style="width:60px;text-align:center" maxlength="4" aria-label="Simge"><input class="input grow" id="ct-name" placeholder="Kategori adı"></div><div class="swatches" style="margin:12px 0">${ACCENTS.map(c => `<button class="swatch" style="--c:${c}" data-cc="${c}" aria-pressed="${c === color}" aria-label="Renk"></button>`).join("")}</div><button class="btn block" id="ct-add">${ICON.plus} Kategori ekle${proPill()}</button></div>`,
+      onMount(el) { draw(el); bindChips(el, "cc", v => color = v); $("#ct-add", el).onclick = () => { if (!requirePro("look")) return; const name = $("#ct-name", el).value.trim(); if (!name) { toast("Kategori adı yaz."); return; } S.categories.push({ id: "c_" + uid(), name, icon: $("#ct-icon", el).value.trim() || "⭐", color }); $("#ct-name", el).value = ""; save(); draw(el); toast("Kategori eklendi"); }; } });
   },
   data() {
-    openSheet({ title: "Verileri dışa aktar", body: `<p class="muted" style="margin:0 0 14px">Tüm kişisel verilerini indir. JSON yedeği geri yüklemek için kullanılabilir.</p><div style="display:flex;flex-direction:column;gap:10px"><button class="btn block primary" data-ex="json">${ICON.download} Yedek (JSON)</button><button class="btn block" data-ex="ics">${ICON.cal} Takvim (ICS)</button><button class="btn block" data-ex="csv">${ICON.tasks} Tablo (CSV)</button></div>`,
-      onMount(el) { $$("[data-ex]", el).forEach(b => b.onclick = () => exportData(b.dataset.ex)); } });
+    openSheet({ title: "Verileri dışa aktar", body: `<p class="muted" style="margin:0 0 14px">Tüm kişisel verilerini indir. JSON yedeği geri yüklemek için kullanılabilir.</p>${S.lastBackup ? `<p class="tiny muted" style="margin:-6px 0 14px">${tr(`Son yedek: ${new Intl.DateTimeFormat(LOCALE, { dateStyle: "medium" }).format(new Date(S.lastBackup))}`)}</p>` : ""}<div style="display:flex;flex-direction:column;gap:10px"><button class="btn block primary" data-ex="json">${ICON.download} Yedek (JSON)</button><button class="btn block" data-ex="ics">${ICON.cal} Takvim (ICS)${proPill()}</button><button class="btn block" data-ex="csv">${ICON.tasks} Tablo (CSV)${proPill()}</button></div>`,
+      onMount(el) { $$("[data-ex]", el).forEach(b => b.onclick = () => { if (b.dataset.ex !== "json" && !requirePro("export")) return; exportData(b.dataset.ex); }); } });
   },
   import() {
     openSheet({ title: "Yedekten geri yükle", body: `<p class="muted" style="margin:0 0 14px">Daha önce indirdiğin JSON yedeğini seç. Mevcut verilerin yedekteki verilerle değiştirilir.</p><label class="btn block primary">${ICON.upload} JSON dosyası seç<input type="file" accept="application/json,.json" id="im-file" hidden></label>`,
@@ -1392,12 +1498,37 @@ const SETTINGS = {
     openSheet({ title: L("Dil"), body: `<div style="display:flex;flex-direction:column;gap:10px">${Object.entries(LANGS).map(([k, v]) => `<button class="btn block ${k === LANG ? "primary" : ""}" data-lg="${k}" data-notr>${v.name}</button>`).join("")}</div>`,
       onMount(el, close) { $$("[data-lg]", el).forEach(b => b.onclick = () => { S.profile.lang = b.dataset.lg; setLang(S.profile.lang); close(); save(); }); } });
   },
+  install() {
+    if (installEvt) { installEvt.prompt(); installEvt.userChoice.then(c => { if (c.outcome === "accepted") toast("Dayflow ana ekranına eklendi"); installEvt = null; render(); }).catch(() => { }); return; }
+    openSheet({ title: "Uygulamayı yükle", body: `<p class="muted" style="margin:0 0 12px">${isIOS() ? "Safari'de alttaki Paylaş düğmesine dokun, ardından “Ana Ekrana Ekle”yi seç." : "Tarayıcı menüsünden “Uygulamayı yükle” ya da “Ana ekrana ekle”yi seç."}</p><p class="tiny muted" style="margin:0">Yüklendikten sonra Dayflow çevrimdışı da çalışır.</p>` });
+  },
+  about() {
+    openSheet({ title: "Hakkında", body: `<div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin:4px 0 18px">${brandHtml(40)}<span class="small muted">${tr("Sürüm " + APP.release)}</span></div>
+      <div class="kv"><span>Veri depolama</span><b>${remote ? L("Cihaz + bulut senkronu") : L("Yalnızca bu cihaz")}</b></div>
+      <div class="kv"><span>AI planlayıcı</span><b>${sampleApi ? "Claude" : L("Cihaz üzerinde")}</b></div>
+      <div class="kv"><span>Çevrimdışı kullanım</span><b>${"serviceWorker" in navigator && navigator.serviceWorker.controller ? L("Hazır") : L("Tarayıcıya bağlı")}</b></div>
+      <p class="tiny muted" style="margin:14px 2px 0">Dayflow reklam, izleyici veya analitik araç içermez.</p>`,
+      foot: `<a class="btn block" href="${BRAND.privacyUrl}?lang=${LANG}" target="_blank" rel="noopener">Gizlilik politikası</a><a class="btn block" href="${BRAND.termsUrl}?lang=${LANG}" target="_blank" rel="noopener">Kullanım koşulları</a>` });
+  },
+  support() {
+    const body = encodeURIComponent(`\n\n---\nDayflow ${APP.release} · ${navigator.userAgent}`);
+    location.href = `mailto:${BRAND.supportEmail}?subject=${encodeURIComponent("Dayflow geri bildirim")}&body=${body}`;
+  },
+  privacy() { window.open(BRAND.privacyUrl + "?lang=" + LANG, "_blank", "noopener"); },
+  terms() { window.open(BRAND.termsUrl + "?lang=" + LANG, "_blank", "noopener"); },
+  share() { navigator.share({ title: APP.name, text: L("Gününü saat saat planla: takvim, görevler ve alışkanlıklar tek yerde."), url: BRAND.website || location.href.split("#")[0] }).catch(() => { }); },
   demo() { confirmSheet({ title: "Örnek veriler", text: "Örnek aktiviteler, görevler ve alışkanlıklar mevcut verilerine eklenecek.", okText: "Ekle", danger: false, onOk: () => { seedDemo(); save(); toast("Örnek veriler eklendi"); } }); },
-  reset() { confirmSheet({ title: "Tüm verileri sil", text: "Aktiviteler, görevler, alışkanlıklar, notlar ve ayarlar kalıcı olarak silinecek. Önce yedek almanı öneririz.", okText: "Hepsini sil", onOk: () => { S = blankState(); S.profile.lang = LANG; S.onboarded = true; save(); toast("Tüm veriler silindi"); } }); }
+  reset() { confirmSheet({ title: "Tüm verileri sil", text: "Aktiviteler, görevler, alışkanlıklar, notlar ve ayarlar kalıcı olarak silinecek. Önce yedek almanı öneririz.", okText: "Hepsini sil", onOk: () => { try { IDB.db = null; LOCAL_URLS.clear(); indexedDB.deleteDatabase("dayflow-files"); } catch { } S = blankState(); S.profile.lang = LANG; S.onboarded = true; save(); toast("Tüm veriler silindi"); } }); }
 };
 async function saveFile(filename, data) {
-  if (!downloadsApi) { toast("İndirme bu görünümde kullanılamıyor."); return; }
-  try { await downloadsApi.save({ filename, data }); toast("Dosya hazır"); } catch (e) { if (e?.code !== "declined") toast("Dosya kaydedilemedi."); }
+  const done = () => { if (filename.endsWith(".json")) { S.lastBackup = Date.now(); save(true); } toast("Dosya hazır"); };
+  if (downloadsApi) { try { await downloadsApi.save({ filename, data }); done(); } catch (e) { if (e?.code !== "declined") toast("Dosya kaydedilemedi."); } return; }
+  try {
+    const type = filename.endsWith(".json") ? "application/json" : filename.endsWith(".ics") ? "text/calendar" : "text/csv";
+    const url = URL.createObjectURL(new Blob([data], { type: type + ";charset=utf-8" })), a = document.createElement("a");
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000); done();
+  } catch { toast("İndirme bu görünümde kullanılamıyor."); }
 }
 function exportData(kind) {
   const stamp = today();
@@ -1440,7 +1571,8 @@ function notify({ title, body = "", kind = "custom", ref = null, force = false, 
   if (!silent && (force || !inQuiet(nowTZ().min))) {
     toast(tr(title) + (body ? " " + tr(body) : ""), 4200, true);
     if (S.prefs.system && "Notification" in window && Notification.permission === "granted") {
-      try { const sys = new Notification(tr(title), { body: tr(body), tag: n.id }); sys.onclick = () => { window.focus(); openRef(n); sys.close(); }; } catch { }
+      try { const sys = new Notification(tr(title), { body: tr(body), tag: n.id }); sys.onclick = () => { window.focus(); openRef(n); sys.close(); }; }
+      catch { if (navigator.serviceWorker?.controller) navigator.serviceWorker.ready.then(r => r.showNotification(tr(title), { body: tr(body), tag: n.id, icon: "icons/icon-192.png", badge: "icons/icon-192.png" })).catch(() => { }); }
     }
   }
   save();
@@ -1672,6 +1804,7 @@ function bindQuickAdd(root) {
 /* ============ AI PLANNER (Claude sample) ============ */
 let sampleApi = null;
 function aiPlanner(initialDate) {
+  if (!requirePro("ai")) return;
   const n = nowTZ(); let date = initialDate || (n.min > 17 * 60 ? addDays(n.date, 1) : n.date), plan = null, busy = false, ctl = null;
   openSheet({
     title: "✨ " + L("AI ile planla"),
@@ -1696,8 +1829,16 @@ function aiPlanner(initialDate) {
       goBtn.onclick = async () => {
         if (plan) { const sel = plan.blocks.filter(b => b.on); sel.forEach(b => S.activities.push({ id: uid(), title: b.title, description: "", date, start: b.start, end: b.end, category: b.category, color: cat(b.category).color, icon: cat(b.category).icon, priority: "medium", location: "", reminder: S.prefs.defaultReminder, repeat: { type: "none", days: [] }, status: "planned", notes: "", tags: ["ai"], attachments: [], overrides: {}, exdates: [], doneDates: [], createdAt: Date.now(), updatedAt: Date.now() })); save(); close(); toast(`${sel.length} blok eklendi`); UI.calDate = date; UI.calView = "day"; UI.scrollInit = false; go("calendar"); return; }
         const text = $("#ai-text", el).value.trim(); if (!text) { toast("Ne yapmak istediğini yaz."); $("#ai-text", el).focus(); return; }
-        if (!sampleApi) { toast("AI planlayıcı bu görünümde kullanılamıyor."); return; }
-        if (busy) return; busy = true; goBtn.disabled = true; goBtn.textContent = L("Plan hazırlanıyor…"); out.innerHTML = `<div class="empty">${L("Plan hazırlanıyor…")}</div>`;
+        if (busy) return;
+        if (!sampleApi) {
+          const fixedL = occurrences(date).map(o => ({ start: o.start, end: o.end }));
+          const tasksL = $("#ai-tasks", el).checked ? S.tasks.filter(x => x.status !== "done" && (!x.deadline || x.deadline <= addDays(date, 2))).slice(0, 12) : [];
+          const blocks = localPlan(text, date, fixedL, tasksL);
+          if (!blocks.length) { out.innerHTML = `<div class="empty">${L("AI uygun bir blok bulamadı. İsteğini biraz daha detaylandır.")}</div>`; plan = null; }
+          else { plan = { summary: L("Hızlı planlayıcı (cihaz üzerinde) önerisi. Süreleri “2 saat ders, 45 dk spor” gibi yazarsan daha iyi sonuç alırsın."), blocks }; drawPlan(); }
+          return;
+        }
+        busy = true; goBtn.disabled = true; goBtn.textContent = L("Plan hazırlanıyor…"); out.innerHTML = `<div class="empty">${L("Plan hazırlanıyor…")}</div>`;
         const fixed = occurrences(date).map(o => ({ title: o.title, start: o.start, end: o.end }));
         const tasks = $("#ai-tasks", el).checked ? S.tasks.filter(x => x.status !== "done" && (!x.deadline || x.deadline <= addDays(date, 2))).slice(0, 12).map(x => ({ title: x.title, minutes: x.estimatedDuration || null, priority: x.priority, due: x.deadline })) : [];
         const lname = { tr: "Turkish", en: "English", es: "Spanish" }[LANG];
@@ -1726,6 +1867,62 @@ Return ONLY JSON: {"summary":"one short sentence in ${lname}","blocks":[{"title"
       };
     }
   });
+}
+
+/* Cihaz üzerinde çalışan kural tabanlı planlayıcı (Claude yokken yedek) */
+const W = src => new RegExp("(?<![\\p{L}\\d])(?:" + src + ")(?![\\p{L}\\d])", "iu");
+const PLAN_KW = [
+  ["work", W("i[sş]e?|ofis|toplant[ıi]\\p{L}*|proje\\p{L}*|work|office|meeting|project|trabaj\\p{L}*|oficina|reuni[oó]n|proyecto")],
+  ["edu", W("ders\\p{L}*|[cç]al[ıi][sş]\\p{L}*|s[ıi]nav\\p{L}*|kpss|okul\\p{L}*|kitap\\p{L}*|oku\\p{L}*|study|studying|class|exam|lesson|read\\p{L}*|homework|estudi\\p{L}*|clase|examen|leer|libro")],
+  ["sport", W("spor\\p{L}*|ko[sş]u\\p{L}*|y[üu]r[üu]y[üu][sş]\\p{L}*|gym|salon\\p{L}*|antrenman\\p{L}*|fitness|yoga|pilates|workout|run\\p{L}*|walk\\p{L}*|deporte|correr|gimnasio|caminar")],
+  ["home", W("temizli\\p{L}*|ev|yemek|cook\\p{L}*|clean\\p{L}*|chores|laundry|limpi\\p{L}*|cocin\\p{L}*|casa")],
+  ["rest", W("uyku|dinlen\\p{L}*|mola|nap|rest|break|descans\\p{L}*|siesta|meditasyon|meditat\\p{L}*")],
+  ["social", W("arkada[sş]\\p{L}*|aile\\p{L}*|bulu[sş]\\p{L}*|friend\\p{L}*|family|date|amig\\p{L}*|familia")],
+  ["fun", W("oyun\\p{L}*|film\\p{L}*|dizi\\p{L}*|game\\p{L}*|movie\\p{L}*|netflix|juego\\p{L}*|pel[ií]cula\\p{L}*|serie")],
+  ["shop", W("al[ıi][sş]veri[sş]\\p{L}*|market\\p{L}*|shopping|groceries|compras|supermercado")],
+  ["finance", W("fatura\\p{L}*|banka\\p{L}*|b[üu]t[cç]e\\p{L}*|bill\\p{L}*|bank\\p{L}*|budget|factura\\p{L}*|banco")]
+];
+function localPlan(text, date, fixed, tasks) {
+  const UNIT_H = "(?:saat|sa|hours?|hrs?|h|horas?)", UNIT_M = "(?:dakika|dk|minutes?|mins?|m|minutos?)";
+  const durRe = new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*${UNIT_H}(?:\\s*(\\d+)\\s*${UNIT_M})?\\b|(\\d+)\\s*${UNIT_M}\\b|\\b(yar[ıi]m saat|half an hour|media hora)\\b`, "iu");
+  const rangeRe = /\b(\d{1,2})(?:[:.](\d{2}))?\s*(?:[-–]|to|ile|a)\s*(\d{1,2})(?:[:.](\d{2}))?(?![\d:.]|\s*(?:saat|sa|dk|dakika|h|hrs?|hours?|m|mins?|minutes?)\b)/iu;
+  const timeRe = /(?:\b(?:saat|at|a las|alle)\s+)?\b(\d{1,2})(?:[:.](\d{2}))?\s*(?:['’]\s*(?:da|de|ta|te|dan|den|tan|ten)|\s*(am|pm))\b|\b(?:saat|at|a las)\s+(\d{1,2})(?:[:.](\d{2}))?\b|\b(\d{1,2}):(\d{2})\b/iu;
+  const hm = (h, m, ap) => { h = +h; m = +(m || 0); if (ap) { ap = ap.toLowerCase(); if (ap === "pm" && h < 12) h += 12; if (ap === "am" && h === 12) h = 0; } return h > 23 || m > 59 ? null : h * 60 + m; };
+  const parseTime = s => { const m = s.match(timeRe); if (!m) return null; return m[1] != null ? hm(m[1], m[2], m[3]) : m[4] != null ? hm(m[4], m[5]) : hm(m[6], m[7]); };
+  const catOf = s => { for (const [c, re] of PLAN_KW) { const m = s.match(re); if (m) return { c, word: m[0] }; } return null; };
+  const titleOf = (seg, hit) => {
+    if (hit) { const w = hit.word; return w.length <= 3 || /^i[sş]e?$/iu.test(w) ? cat(hit.c).name : w.charAt(0).toLocaleUpperCase(LOCALE) + w.slice(1).toLocaleLowerCase(LOCALE); }
+    const t = seg.replace(durRe, "").replace(rangeRe, "").replace(timeRe, "").replace(/\b(yar[ıi]n|bug[üu]n|tomorrow|today|ma[ñn]ana|hoy|istiyorum|yapmak|yapaca[gğ][ıi]m|i want to|want to|quiero|ve|and|y)\b/giu, " ").replace(/\s+/g, " ").trim();
+    return t ? (t.charAt(0).toLocaleUpperCase(LOCALE) + t.slice(1)).split(" ").slice(0, 4).join(" ") : "";
+  };
+  const segs = text.split(/[\n;!?]+|(?<!\d)[.,]|[.,](?!\d)|\s+(?:ve|sonra|and then|and|then|y luego|y)\s+/iu).map(s => s.trim()).filter(Boolean);
+  const anchored = [], flex = []; let pendingStart = null;
+  for (const seg of segs) {
+    const hit = catOf(seg), d = seg.match(durRe), r = seg.match(rangeRe);
+    let minutes = 0; if (d) minutes = d[4] ? 30 : d[3] ? +d[3] : Math.round(parseFloat(d[1].replace(",", ".")) * 60) + (+d[2] || 0);
+    if (r && !d) { const s = hm(r[1], r[2]), e = hm(r[3], r[4]); if (s != null && e != null && e > s) { anchored.push({ title: titleOf(seg, hit) || cat("other").name, start: s, end: e, category: hit ? hit.c : "other" }); continue; } }
+    const t = parseTime(seg);
+    if (t != null && minutes) { anchored.push({ title: titleOf(seg, hit) || cat("other").name, start: t, end: Math.min(1439, t + minutes), category: hit ? hit.c : "other" }); pendingStart = null; continue; }
+    if (t != null) { if (pendingStart && t > pendingStart.start) { anchored.push({ ...pendingStart, end: t }); pendingStart = null; } else pendingStart = { title: titleOf(seg, hit) || cat("other").name, start: t, category: hit ? hit.c : "other" }; continue; }
+    if (minutes) flex.push({ title: titleOf(seg, hit) || cat(hit ? hit.c : "other").name, minutes: clamp(minutes, 5, 600), category: hit ? hit.c : "other" });
+  }
+  if (pendingStart) anchored.push({ ...pendingStart, end: Math.min(1439, pendingStart.start + 60) });
+  const PR = { high: 0, medium: 1, low: 2 };
+  [...tasks].sort((a, b) => (PR[a.priority] ?? 1) - (PR[b.priority] ?? 1)).forEach(t => flex.push({ title: t.title.slice(0, 80), minutes: clamp(+t.estimatedDuration || 30, 10, 240), category: t.category || "other" }));
+  const n = nowTZ(), dayS = (S.profile.dayStart ?? 6) * 60, dayE = Math.min(1439, (S.profile.dayEnd ?? 24) * 60);
+  let cursor = Math.max(dayS, 8 * 60, date === n.date ? Math.ceil((n.min + 5) / 15) * 15 : dayS);
+  const busy = [...fixed.map(f => ({ s: toMin(f.start), e: toMin(f.end) })), ...anchored.map(a => ({ s: a.start, e: a.end }))];
+  const free = (s, e) => !busy.some(b => s < b.e && e > b.s);
+  const out = anchored.map(a => ({ title: a.title, start: fromMin(a.start), end: fromMin(a.end), category: a.category }));
+  for (const f of flex) {
+    let s = cursor;
+    while (s + f.minutes <= dayE && !free(s, s + f.minutes)) { const blocker = busy.filter(b => s < b.e && s + f.minutes > b.s).reduce((m, b) => Math.max(m, b.e), s + 5); s = Math.ceil(blocker / 5) * 5; }
+    if (s + f.minutes > dayE) continue;
+    out.push({ title: f.title, start: fromMin(s), end: fromMin(s + f.minutes), category: f.category });
+    busy.push({ s, e: s + f.minutes }); cursor = s + f.minutes + 10;
+  }
+  const cats = new Set(S.categories.map(c => c.id));
+  return out.filter(b => toMin(b.end) > toMin(b.start)).map(b => ({ ...b, category: cats.has(b.category) ? b.category : "other", on: !fixed.some(f => toMin(b.start) < toMin(f.end) && toMin(b.end) > toMin(f.start)) })).sort((a, b) => toMin(a.start) - toMin(b.start));
 }
 
 /* ============ FOCUS MODE ============ */
@@ -1807,6 +2004,7 @@ function applyTemplate(t, date) {
   save(); toast(conf ? tr(`${t.blocks.length} blok eklendi`) + ` · ⚠️ ${conf}` : `${t.blocks.length} blok eklendi`);
 }
 function templatesSheet(date) {
+  if (!requirePro("templates")) return;
   S.templates = S.templates || [];
   const row = t => { const first = t.blocks[0], last = t.blocks[t.blocks.length - 1]; return `<div class="item"><div class="grow"><div class="ell" style="font-weight:600">${esc(t.builtin ? L(t.name) : t.name)}</div><div class="tiny muted">${tr(`${t.blocks.length} blok`)} · ${first.start}–${last.end}</div></div>${t.builtin ? "" : `<button class="icon-btn" data-tdel="${t.id}" aria-label="${esc(L("Şablonu sil"))}">${ICON.trash}</button>`}<button class="btn sm primary" data-tap="${t.id}">${L("Uygula")}</button></div>`; };
   openSheet({
@@ -1872,15 +2070,121 @@ function onboarding() {
       $("#ob-go", el).onclick = () => { S.profile.lang = LANG; S.profile.name = $("#ob-name", el).value.trim(); if (mode === "demo") seedDemo(); S.onboarded = true; save(); close(); toast(mode === "demo" ? "Örnek bir gün hazırlandı" : "Hazırsın. İlk aktiviteni ekle."); };
     } });
 }
+/* ============ PRO / LİSANS (demo) ============ */
+// Lisans, kullanıcı verisinden ayrı tutulur: "Tüm verileri sil" ya da yedek geri yükleme satın alımı etkilemez.
+let LICENSE = null;
+try { LICENSE = JSON.parse(localStorage.getItem(PRO.licenseKey) || "null"); } catch { }
+const isPro = () => !!(LICENSE && LICENSE.active);
+const PRO_FEATURES = [
+  ["ai", ICON.sparkle, "AI planlayıcı", "Gününü anlat, takvimini o kursun"],
+  ["habits", ICON.habit, "Sınırsız alışkanlık", "Ücretsiz sürümde en fazla 3"],
+  ["stats", ICON.stats, "Gelişmiş istatistikler", "30 günlük trendler ve kategori analizi"],
+  ["templates", ICON.layers, "Rutin şablonları", "Hazır ve kendi şablonlarınla tek dokunuşta plan"],
+  ["files", ICON.clip, "Dosya ekleri", "Aktivitelere fotoğraf ve PDF ekle"],
+  ["export", ICON.cal, "Takvim ve tablo dışa aktarma", "Google/Apple Takvim (ICS) ve Excel (CSV)"],
+  ["look", ICON.palette, "Kişiselleştirme", "Özel kategoriler ve 8 vurgu rengi"]
+];
+// Demo lisans biçimi: DF-XXXX-XXXX-CCCC (son grup, ilk iki grubun sağlama toplamı). Gerçek sağlayıcıda bu doğrulama API'ye taşınacak.
+const KEY_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function keySum(s) { let h = 7; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) % 1048573; let o = ""; for (let i = 0; i < 4; i++) { o += KEY_ABC[h % 32]; h = Math.floor(h / 32) + i * 7; } return o; }
+function makeKey() { const g = () => Array.from({ length: 4 }, () => KEY_ABC[Math.floor(Math.random() * 32)]).join(""); const a = g(), b = g(); return `DF-${a}-${b}-${keySum(a + b)}`; }
+function validKey(k) { const m = String(k || "").trim().toUpperCase().match(/^DF-([A-Z0-9]{4})-([A-Z0-9]{4})-([A-Z0-9]{4})$/); return !!m && keySum(m[1] + m[2]) === m[3]; }
+function setLicense(l) { LICENSE = l; try { l ? localStorage.setItem(PRO.licenseKey, JSON.stringify(l)) : localStorage.removeItem(PRO.licenseKey); } catch { } render(); }
+function activateKey(k, close) {
+  k = String(k || "").trim().toUpperCase();
+  if (!validKey(k)) { toast("Lisans anahtarı geçersiz. DF-XXXX-XXXX-XXXX biçiminde olmalı."); return false; }
+  setLicense({ active: true, key: k, plan: "lifetime", since: Date.now(), demo: PRO.demo });
+  close && close(); proWelcome(); return true;
+}
+function requirePro(feature) { if (isPro()) return true; paywall(feature); return false; }
+const proPill = () => isPro() ? "" : ` <span class="pro-pill">PRO</span>`;
+function paywall(feature) {
+  const hl = PRO_FEATURES.find(f => f[0] === feature);
+  openSheet({ title: "Dayflow Pro", body: `
+    <div class="pro-hero"><div class="pro-badge">${ICON.sparkle}</div><h2 style="font-size:21px">${hl ? L(hl[2]) + " " + L("Pro'ya özel") : L("Gününün tam kontrolü")}</h2><p class="muted" style="margin:6px 0 0">${L("Tek seferlik ödeme, abonelik yok. Tüm gelecek güncellemeler dahil.")}</p></div>
+    <div class="list">${PRO_FEATURES.map(([k, ic, t, s]) => `<div class="item pro-feat${k === feature ? " hl" : ""}"><span class="mi">${ic}</span><span class="grow"><b style="font-weight:600">${t}</b><div class="tiny muted">${s}</div></span>${ICON.check.replace("<svg", '<svg class="pro-ok"')}</div>`).join("")}</div>
+    <p class="tiny muted" style="margin:14px 2px 0">Ücretsiz sürümdeki verilerin olduğu gibi kalır. Pro'ya geçmek ya da geçmemek verilerini asla kilitlemez.</p>`,
+    foot: `<div style="display:flex;flex-direction:column;gap:8px;width:100%"><button class="btn block primary" id="pw-buy">${L("Pro'ya geç")} · ${PRO.price}</button><button class="btn block" id="pw-key">${L("Lisans anahtarım var")}</button></div>`,
+    onMount(el, close) { $("#pw-buy", el).onclick = () => { close(); checkout(); }; $("#pw-key", el).onclick = () => { close(); licenseSheet(); }; } });
+}
+function checkout() {
+  if (!PRO.demo && PRO.checkoutUrl) { window.open(PRO.checkoutUrl, "_blank", "noopener"); licenseSheet(); return; }
+  openSheet({ title: "Ödeme", body: `
+    <div class="demo-banner">${L("TEST MODU · Gerçek ödeme alınmaz, kart bilgisi istenmez.")}</div>
+    <div class="card" style="box-shadow:none;border:1px solid var(--line)">
+      <div class="kv"><span>Dayflow Pro</span><b>${PRO.price}</b></div>
+      <div class="kv"><span>Plan</span><b>${L(PRO.priceNote)}</b></div>
+      <div class="kv"><span>KDV</span><b>${L("Dahil")}</b></div>
+      <div class="kv" style="font-size:17px"><span><b>Toplam</b></span><b>${PRO.price}</b></div>
+    </div>
+    <label class="field section"><span>Lisansın gönderileceği e-posta</span><input class="input" type="email" id="co-mail" value="${esc(S.profile.email || "")}" placeholder="ornek@eposta.com" autocomplete="email"></label>
+    <label class="row small" style="gap:10px;align-items:flex-start"><input type="checkbox" id="co-terms" style="margin-top:3px;width:18px;height:18px;flex:none"><span>${L("Kullanım koşullarını kabul ediyorum. Dijital içerik hemen teslim edildiği için cayma hakkımın sona ereceğini biliyorum.")} <a class="link" href="${BRAND.termsUrl}?lang=${LANG}" target="_blank" rel="noopener">${L("Koşulları oku")}</a></span></label>`,
+    foot: `<button class="btn block primary" id="co-pay">${L("Demo ödemeyi tamamla")} · ${PRO.price}</button>`,
+    onMount(el, close) {
+      const btn = $("#co-pay", el);
+      btn.onclick = () => {
+        const mail = $("#co-mail", el).value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { toast("Geçerli bir e-posta yaz."); $("#co-mail", el).focus(); return; }
+        if (!$("#co-terms", el).checked) { toast("Devam etmek için koşulları onayla."); return; }
+        btn.disabled = true; btn.textContent = L("Ödeme işleniyor…");
+        setTimeout(() => { const key = makeKey(); setLicense({ active: true, key, plan: "lifetime", since: Date.now(), email: mail, demo: true, order: "DEMO-" + Date.now().toString(36).toUpperCase() }); close(); proWelcome(); }, 1400);
+      };
+    } });
+}
+function proWelcome() {
+  openSheet({ title: "Dayflow Pro", body: `<div class="pro-hero"><div class="pro-badge pop">${ICON.check}</div><h2 style="font-size:21px">${L("Pro'ya hoş geldin!")}</h2><p class="muted" style="margin:6px 0 0">${L("Tüm özellikler açıldı. Lisans anahtarını başka cihazlarda kullanmak için sakla.")}</p></div>
+    <div class="license-key" id="pw-k">${esc(LICENSE.key)}</div>${LICENSE.demo ? `<p class="tiny muted" style="text-align:center;margin:8px 0 0">${L("Bu bir demo lisansıdır.")}</p>` : ""}`,
+    foot: `<button class="btn block" id="pw-copy">${ICON.copy} ${L("Kopyala")}</button><button class="btn block primary" data-ok>${L("Başla")}</button>`,
+    onMount(el, close) { $("[data-ok]", el).onclick = close; $("#pw-copy", el).onclick = () => { navigator.clipboard?.writeText(LICENSE.key).then(() => toast("Lisans anahtarı kopyalandı"), () => toast("Kopyalanamadı")); }; } });
+}
+function licenseSheet() {
+  if (isPro()) {
+    openSheet({ title: "Lisans", body: `<div class="kv"><span>Durum</span><b style="color:var(--ok)">${L("Aktif")}</b></div><div class="kv"><span>Plan</span><b>${L("Ömür boyu")}</b></div><div class="kv"><span>Etkinleştirme</span><b>${new Intl.DateTimeFormat(LOCALE, { dateStyle: "medium" }).format(new Date(LICENSE.since))}</b></div>${LICENSE.order ? `<div class="kv"><span>Sipariş</span><b>${esc(LICENSE.order)}</b></div>` : ""}<div class="license-key" style="margin-top:14px">${esc(LICENSE.key)}</div>`,
+      foot: `<button class="btn block danger" id="lc-off">${L("Bu cihazda devre dışı bırak")}</button>`,
+      onMount(el, close) { $("#lc-off", el).onclick = () => { close(); confirmSheet({ title: "Lisansı devre dışı bırak", text: "Pro özellikleri bu cihazda kapanır, verilerin silinmez. Anahtarınla daha sonra tekrar etkinleştirebilirsin.", okText: "Devre dışı bırak", onOk: () => { setLicense(null); toast("Lisans devre dışı bırakıldı"); } }); }; } });
+    return;
+  }
+  openSheet({ title: "Lisans anahtarı", body: `<p class="muted" style="margin:0 0 14px">Satın aldıktan sonra e-postana gelen anahtarı gir.</p><input class="input" id="lc-key" placeholder="DF-XXXX-XXXX-XXXX" autocapitalize="characters" autocomplete="off" spellcheck="false" style="font-family:ui-monospace,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase" autofocus>`,
+    foot: `<button class="btn block primary" id="lc-go">${L("Etkinleştir")}</button>`,
+    onMount(el, close) { const i = $("#lc-key", el); $("#lc-go", el).onclick = () => activateKey(i.value, close); i.onkeydown = e => { if (e.key === "Enter") activateKey(i.value, close); }; } });
+}
+
+/* ============ PWA / INSTALL / ERRORS ============ */
+let installEvt = null;
+const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const canInstall = () => !isStandalone() && !window.claude && (!!installEvt || isIOS());
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; if (UI.tab === "profile") render(); });
+window.addEventListener("appinstalled", () => { installEvt = null; render(); });
+function registerSW() {
+  if (!("serviceWorker" in navigator) || !/^https?:$/.test(location.protocol) || window.claude) return;
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    reg.addEventListener("updatefound", () => { const w = reg.installing; if (w) w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) toast(L("Yeni sürüm hazır. Uygulamayı yeniden açınca güncellenecek."), 6000); }); });
+  }).catch(() => { });
+}
+let lastErrToast = 0;
+function onAppError(err) {
+  try { const log = JSON.parse(localStorage.getItem("dayflow:errors") || "[]"); log.unshift({ at: new Date().toISOString(), v: APP.release, msg: String(err?.message || err).slice(0, 300) }); localStorage.setItem("dayflow:errors", JSON.stringify(log.slice(0, 20))); } catch { }
+  if (Date.now() - lastErrToast > 15000) { lastErrToast = Date.now(); toast("Beklenmeyen bir hata oluştu. Verilerin güvende; sorun sürerse sayfayı yenile."); }
+}
+window.addEventListener("error", e => { if (e.error) onAppError(e.error); });
+window.addEventListener("unhandledrejection", e => onAppError(e.reason));
 function init() {
   loadLocal(); setLang(S.profile.lang || detectLang()); applyTheme();
   $("#fab").innerHTML = ICON.plus; $("#fab").onclick = addMenu;
   UI.calView = S.profile.defaultView;
   render();
-  if (!S.onboarded) onboarding(); else maybeMorningPlanner();
+  const shortcut = new URLSearchParams(location.search).get("new");
+  if (shortcut) try { history.replaceState(null, "", location.pathname); } catch { }
+  if (!S.onboarded) onboarding();
+  else if (["act", "task", "habit", "note", "focus", "ai"].includes(shortcut)) setTimeout(() => quick(shortcut), 300);
+  else maybeMorningPlanner();
   tick(); setInterval(tick, 20000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
   initCapabilities();
+  hydrateLocalFiles();
+  registerSW();
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => { });
 }
 init();
 </script>

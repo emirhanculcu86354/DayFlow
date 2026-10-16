@@ -1,0 +1,26 @@
+{
+  "name": "Dayflow — Günlük Planlayıcı",
+  "short_name": "Dayflow",
+  "description": "Gününü saat saat planla: takvim, görevler, alışkanlıklar ve odak zamanlayıcı tek yerde.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F2F3F6",
+  "theme_color": "#5B6CFF",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["productivity", "lifestyle"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "dayflow-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Yeni görev", "short_name": "Görev", "url": "./?new=task", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Yeni aktivite", "short_name": "Aktivite", "url": "./?new=act", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Odak modu", "short_name": "Odak", "url": "./?new=focus", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
