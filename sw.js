@@ -1,6 +1,6 @@
 /* Dayflow service worker — uygulama kabuğunu önbelleğe alır, çevrimdışı açılmayı sağlar.
    Yeni sürüm yayınlarken VERSION'ı artır; eski önbellek otomatik silinir. */
-const VERSION = "dayflow-1.2.0";
+const VERSION = "dayflow-1.2.1";
 const SHELL = [
   "./",
   "index.html",
